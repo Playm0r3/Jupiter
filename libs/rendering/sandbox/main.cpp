@@ -46,8 +46,12 @@ int main()
         jupiter::rendering::Device* device = new jupiter::rendering::DirectXDevice();
         device->createDevice();
 
+        std::cout << "Device created" << std::endl;
+
         jupiter::rendering::CommandQueue* queue = new jupiter::rendering::DirectXCommandQueue();
         queue->createCommandQueue(device);
+
+        std::cout << "CommandQueue created" << std::endl;
 
         jupiter::rendering::SwapchainDescriptor scDesc = {};
         scDesc.device = device;
@@ -57,6 +61,8 @@ int main()
 
         jupiter::rendering::Swapchain* swapchain = new jupiter::rendering::DirectXSwapchain();
         swapchain->createSwapchain(&scDesc);
+
+        std::cout << "Swapchain created" << std::endl;
 
         uint32_t frameIndex = swapchain->getCurrentBackBufferIndex();
 
@@ -69,10 +75,14 @@ int main()
         jupiter::rendering::DescriptorHeap* heap = new jupiter::rendering::DirectXDescriptorHeap();
         heap->createDescriptorHeap(device, &heapDesc);
 
+        std::cout << "DescriptorHeap created" << std::endl;
+
         uint32_t descriptorSize = device->getDescriptorHandleIncrementSize(jupiter::rendering::WM_HEAP_DESCRIPTOR_TYPE_RTV);
 
         jupiter::rendering::CpuDescriptorHandle* handle = new jupiter::rendering::DirectXCpuDescriptorHandle();
         handle->createCpuDescriptorHandle(heap);
+
+        std::cout << "CpuDescriptorHandle created" << std::endl;
 
         jupiter::rendering::Resource* resources[3];
         resources[0] = new jupiter::rendering::DirectXResource();
@@ -86,8 +96,12 @@ int main()
             handle->offset(descriptorSize);
         }
 
+        std::cout << "RTVs Descriptor created" << std::endl;
+
         jupiter::rendering::CommandAllocator* allocator = new jupiter::rendering::DirectXCommandAllocator();
         device->createCommandAllocator(jupiter::rendering::WM_COMMAND_LIST_TYPE_DIRECT, allocator);
+
+        std::cout << "CommandAllocator created" << std::endl;
 
         bool running = true;
         while (running)
