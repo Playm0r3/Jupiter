@@ -17,7 +17,7 @@ namespace jupiter::rendering
         desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         desc.NodeMask = 0;
 
-        HRESULT hr = device->getHandle()->device->CreateCommandQueue(&desc, IID_PPV_ARGS(&commandQueue));
+        HRESULT hr = device->getDHandle()->device->CreateCommandQueue(&desc, IID_PPV_ARGS(&commandQueue));
 
         if (FAILED(hr))
         {

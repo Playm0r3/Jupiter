@@ -25,9 +25,13 @@ namespace jupiter::rendering
         void createCommandQueue(Device* device) override;
         void destroyCommandQueue() override;
 
+        DirectXCommandQueue* getDHandle() override { return this; }
+
     private:
 
         Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
+
+        friend class DirectXSwapchain;
 
     };
 }

@@ -5,10 +5,13 @@
 #ifndef JUPITER_COMMANDQUE_H
 #define JUPITER_COMMANDQUE_H
 
+#include <exception>
+
 namespace jupiter::rendering
 {
 
     class Device;
+    class DirectXCommandQueue;
 
     class CommandQueue
     {
@@ -19,6 +22,8 @@ namespace jupiter::rendering
 
         virtual void createCommandQueue(Device* device) = 0;
         virtual void destroyCommandQueue() = 0;
+
+        virtual DirectXCommandQueue* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api"};}
     };
 }
 

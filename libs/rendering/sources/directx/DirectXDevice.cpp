@@ -3,6 +3,10 @@
 //
 
 #include "rendering/directx/DirectXDevice.h"
+#include "rendering/directx/DirectXResource.h"
+#include "rendering/directx/DirectXCpuDescriptorHandle.h"
+#include "rendering/directx/DirectXCommandAllocator.h"
+
 #include <iostream>
 
 namespace jupiter::rendering
@@ -29,4 +33,25 @@ namespace jupiter::rendering
 
     }
 
+    uint32_t DirectXDevice::getDescriptorHandleIncrementSize(HeapDescriptorType type)
+    {
+        return device->GetDescriptorHandleIncrementSize(utils::getHeapTypeFromDescriptorType(type));
+    }
+
+    void DirectXDevice::createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh)
+    {
+        DirectXResource* r = resource->getDHandle();
+        DirectXCpuDescriptorHandle* handle = cdh->getDHandle();
+
+        device->CreateRenderTargetView(r->resource.Get(), nullptr, handle->handle);
+    }
+
+    void DirectXDevice::createCommandAllocator(CommandListType type, CommandAllocator* allocator)
+    {
+        DirectXCommandAllocator* a = allocator->getDHandle();
+        HRESULT hr = device->CreateCommandAllocator(utils::getCommandListTypeFromCommandListType(type), IID_PPV_ARGS(&a->allocator));
+        if (!FAILED(hr)) return;
+
+        std::cout << "[Soleil] Impossible de creer un alloueur de commande !" << std::endl;
+    }
 }

@@ -2,6 +2,14 @@ add_library(soleil STATIC
         sources/directx/DirectXInstance.cpp
         sources/directx/DirectXDevice.cpp
         sources/directx/DirectXCommandQueue.cpp
+        sources/directx/DirectXSwapchain.cpp
+        sources/directx/DirectXDescriptorHeap.cpp
+        sources/directx/DirectXCpuDescriptorHandle.cpp
+        sources/directx/DirectXResource.cpp
+        sources/directx/DirectXCommandallocator.cpp
+
+        sources/interface/CommandListType.cpp
+        sources/interface/HeapDescriptorType.cpp
 )
 
 target_include_directories(soleil PUBLIC include)
