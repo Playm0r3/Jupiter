@@ -41,6 +41,7 @@ namespace jupiter::rendering
         friend class DirectXCommandQueue;
         friend class DirectXSwapchain;
         friend class DirectXDescriptorHeap;
+        friend class DirectXRootSignature;
 
     };
 
