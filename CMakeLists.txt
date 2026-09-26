@@ -6,6 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(BUILD_TESTS "Build unit tests" OFF)
 
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "AMD64")
+    set(TARGET_ARCHITECTURE "x64")
+else()
+    set(TARGET_ARCHITECTURE "arm64")
+endif()
+
+include_directories(externs/dxc/inc)
+
 #add_subdirectory(libs/physics)
 #add_subdirectory(libs/scripting)
 add_subdirectory(libs/rendering)

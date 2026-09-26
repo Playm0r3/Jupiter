@@ -5,8 +5,16 @@
 #ifndef JUPITER_SHADER_H
 #define JUPITER_SHADER_H
 
+#include <hlsl/dx/linalg.h>
+#include <exception>
+
+#include <d3d12.h>
+#include <wrl.h>
+
 namespace jupiter::rendering
 {
+
+    class DirectXShader;
 
     class Shader
     {
@@ -16,8 +24,7 @@ namespace jupiter::rendering
         Shader() = default;
         virtual ~Shader() = default;
 
-        virtual void createShader() = 0;
-        virtual void destroyShader() = 0;
+        virtual DirectXShader* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api !"};}
 
     };
 

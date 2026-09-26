@@ -7,6 +7,7 @@
 
 #include <d3d12.h>
 #include <wrl.h>
+#include <vector>
 
 #include "rendering/interface/Shader.h"
 
@@ -21,12 +22,17 @@ namespace jupiter::rendering
         DirectXShader() = default;
         ~DirectXShader() override = default;
 
-        void createShader() override;
-        void destroyShader() override;
+        DirectXShader* getDHandle() override { return this; }
 
     private:
 
         Microsoft::WRL::ComPtr<ID3DBlob> shader;
+        std::vector<uint8_t> byteCode;
+
+        bool copyShaderByteCode();
+
+        friend class DirectXCompiler;
+        friend class DirectXPipelineState;
 
     };
 

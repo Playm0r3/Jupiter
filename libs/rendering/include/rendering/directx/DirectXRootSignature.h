@@ -24,10 +24,14 @@ namespace jupiter::rendering
         void createRootSignature(Device* device) override;
         void destroyRootSignature() override;
 
+        DirectXRootSignature* getDHandle() override {return this;}
+
     private:
 
         Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
         Microsoft::WRL::ComPtr<ID3DBlob> signature;
+
+        friend class DirectXPipelineState;
 
     };
 

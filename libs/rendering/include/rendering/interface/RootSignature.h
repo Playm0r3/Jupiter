@@ -5,10 +5,13 @@
 #ifndef JUPITER_ROOTSIGNATURE_H
 #define JUPITER_ROOTSIGNATURE_H
 
+#include <exception>
+
 namespace jupiter::rendering
 {
 
     class Device;
+    class DirectXRootSignature;
 
     class RootSignature
     {
@@ -19,6 +22,8 @@ namespace jupiter::rendering
 
         virtual void createRootSignature(Device* device) = 0;
         virtual void destroyRootSignature() = 0;
+
+        virtual DirectXRootSignature* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api !"};}
     };
 }
 
