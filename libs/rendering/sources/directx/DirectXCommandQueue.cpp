@@ -3,8 +3,11 @@
 //
 
 #include "rendering/directx/DirectXCommandQueue.h"
+#include "rendering/directx/DirectXCommandList.h"
 #include "rendering/directx/DirectXDevice.h"
+#include "rendering/directx/DirectXFence.h"
 
+#include <vector>
 #include <iostream>
 
 namespace jupiter::rendering
@@ -28,5 +31,23 @@ namespace jupiter::rendering
     void DirectXCommandQueue::destroyCommandQueue()
     {
 
+    }
+
+    void DirectXCommandQueue::executeCommandLists(uint32_t commandListCount, CommandList** commandLists)
+    {
+        std::vector<ID3D12CommandList*> list(commandListCount);
+        for (int i = 0 ; i < commandListCount; i++)
+            list[i] = commandLists[i]->getDHandle()->commandList.Get();
+
+        commandQueue->ExecuteCommandLists(commandListCount, list.data());
+    }
+
+    void DirectXCommandQueue::signal(Fence* fence, uint64_t f)
+    {
+        DirectXFence* df = fence->getDHandle();
+        HRESULT hr = commandQueue->Signal(df->fence.Get(), f);
+        if (!FAILED(hr)) return;
+
+        std::cout << "[Soleil] Impossible de signaler un arrêt d'attente du GPU" << std::endl;
     }
 }

@@ -34,6 +34,8 @@ namespace jupiter::rendering
         D3D12_RASTERIZER_DESC getRasterizerDescriptor(RasterizerDescriptor* descriptor);
         D3D12_BLEND_DESC getBlendDescriptor(BlendDescriptor* descriptor);
 
+        friend class DirectXCommandList;
+
     };
 }
 

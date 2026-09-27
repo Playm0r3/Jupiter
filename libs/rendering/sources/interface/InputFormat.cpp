@@ -4,10 +4,10 @@
 
 #include "rendering/interface/InputFormat.h"
 
-namespace jupiter::rendering
+namespace jupiter::rendering::utils
 {
 
-    DXGI_FORMAT getFormatFromInputFormat(const InputFormat& inputFormat)
+    DXGI_FORMAT getFormat(const InputFormat& inputFormat)
     {
         switch (inputFormat)
         {
@@ -15,6 +15,7 @@ namespace jupiter::rendering
             return DXGI_FORMAT_R32G32B32_FLOAT;
         case InputFormat::WM_INPUT_FORMAT_FLOAT_4:
             return DXGI_FORMAT_R32G32B32A32_FLOAT;
+        case InputFormat::WM_INPUT_FORMAT_UNDEFINED:
         default:
             return DXGI_FORMAT_UNKNOWN;
         }

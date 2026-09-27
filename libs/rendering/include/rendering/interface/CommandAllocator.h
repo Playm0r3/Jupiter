@@ -23,6 +23,8 @@ namespace jupiter::rendering
         virtual void createCommandAllocator() = 0;
         virtual void destroyCommandAllocator() = 0;
 
+        virtual void reset() = 0;
+
         virtual DirectXCommandAllocator* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api !"}; }
 
     };

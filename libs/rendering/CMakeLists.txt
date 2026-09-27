@@ -14,7 +14,8 @@ add_library(soleil STATIC
         ${DX}/DirectXCompiler.cpp
         ${DX}/DirectXShader.cpp
         ${DX}/DirectXPipelineState.cpp
-
+        ${DX}/DirectXCommandList.cpp
+        ${DX}/DirectXFence.cpp
 
         ${IN}/CommandListType.cpp
         ${IN}/HeapDescriptorType.cpp
@@ -24,6 +25,13 @@ add_library(soleil STATIC
         ${IN}/CullMode.cpp
         ${IN}/BlendOp.cpp
         ${IN}/Blend.cpp
+        ${IN}/HeapType.cpp
+        ${IN}/ResourceBarrierFlags.cpp
+        ${IN}/ResourceBarrierType.cpp
+        ${IN}/ResourceDimension.cpp
+        ${IN}/ResourceState.cpp
+        ${IN}/TextureLayout.cpp
+        ${IN}/InputFormat.cpp
 )
 
 message("[Soleil] Build pour : ${TARGET_ARCHITECTURE}")

@@ -48,7 +48,7 @@ namespace jupiter::rendering
 
         Microsoft::WRL::ComPtr<IDxcBlobUtf8> errors;
         result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errors), nullptr);
-        if (errors && errors->GetStringLength() > 0 || FAILED(result->GetStatus()))
+        if (errors && errors->GetStringLength() > 0 || FAILED(result->GetStatus(&rhr)))
         {
             std::cerr << "[Soleil] Erreur de compilation du shader : " << errors->GetStringPointer() << std::endl;
             return nullptr;

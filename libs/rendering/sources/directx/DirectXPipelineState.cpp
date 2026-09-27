@@ -25,7 +25,7 @@ namespace jupiter::rendering
         {
             inputElements[i].SemanticName = descriptor->inputLayout[i].semanticName;
             inputElements[i].SemanticIndex = descriptor->inputLayout[i].semanticIndex;
-            inputElements[i].Format = utils::getFormatFromInputFormat(descriptor->inputLayout[i].inputFormat);
+            inputElements[i].Format = utils::getFormat(descriptor->inputLayout[i].inputFormat);
             inputElements[i].InputSlot = descriptor->inputLayout[i].inputSlot;
             inputElements[i].AlignedByteOffset = descriptor->inputLayout[i].alignedByteOffset;
             inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA; // checker "par instance" fait quoi de différent

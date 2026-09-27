@@ -11,6 +11,7 @@ namespace jupiter::rendering
 {
     enum InputFormat
     {
+        WM_INPUT_FORMAT_UNDEFINED,
         WM_INPUT_FORMAT_FLOAT,
         WM_INPUT_FORMAT_FLOAT_2,
         WM_INPUT_FORMAT_FLOAT_3,
@@ -19,7 +20,7 @@ namespace jupiter::rendering
 
     namespace utils
     {
-        DXGI_FORMAT getFormatFromInputFormat(const InputFormat& inputFormat);
+        DXGI_FORMAT getFormat(const InputFormat& inputFormat);
     }
 
 }

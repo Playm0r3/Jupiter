@@ -23,6 +23,8 @@ namespace jupiter::rendering
         void createResource() override;
         void destroyResource() override;
 
+        void copyToUpload(void* data, size_t size) override;
+
         DirectXResource* getDHandle() override {return this;};
 
     private:
@@ -31,6 +33,7 @@ namespace jupiter::rendering
 
         friend class DirectXSwapchain;
         friend class DirectXDevice;
+        friend class DirectXCommandList;
 
     };
 

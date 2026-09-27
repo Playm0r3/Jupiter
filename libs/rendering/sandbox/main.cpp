@@ -17,6 +17,7 @@
 #include "../include/rendering/directx/DirectXCommandAllocator.h"
 
 #include<SDL3/SDL.h>
+#include <iostream>
 
 int main()
 {
@@ -24,19 +25,19 @@ int main()
     {
 
         if (!SDL_Init(SDL_INIT_VIDEO))
-            throw std::runtime_error(SDL_GetError());
+            throw std::exception(SDL_GetError());
 
         SDL_Window* window = SDL_CreateWindow("SandBox", 1920, 1080, 0);
 
-        if (!window) throw std::runtime_error(SDL_GetError());
+        if (!window) throw std::exception(SDL_GetError());
 
         SDL_PropertiesID props = SDL_GetWindowProperties(window);
 
-        if (!props) throw std::runtime_error(SDL_GetError());
+        if (!props) throw std::exception(SDL_GetError());
 
         HWND hwnd = (HWND)SDL_GetPointerProperty(props, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 
-        if (!hwnd) throw std::runtime_error("Impossible de récupérer le HWND");
+        if (!hwnd) throw std::exception("Impossible de récupérer le HWND");
 
         uint32_t frameCount = 3;
 

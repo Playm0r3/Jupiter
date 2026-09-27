@@ -17,7 +17,7 @@ namespace jupiter::rendering
     public:
 
         DirectXInstance() = default;
-        ~DirectXInstance() = default;
+        ~DirectXInstance() override = default;
 
         void createInstance() override;
         void destroyInstance() override;

@@ -5,8 +5,6 @@
 #ifndef JUPITER_DIRECTXCOMMANDALLOCATOR_H
 #define JUPITER_DIRECTXCOMMANDALLOCATOR_H
 
-#include <iostream>
-
 #include <d3d12.h>
 #include <wrl.h>
 
@@ -26,6 +24,8 @@ namespace jupiter::rendering
         void createCommandAllocator() override;
         void destroyCommandAllocator() override;
 
+        void reset() override;
+
         DirectXCommandAllocator* getDHandle() override {return this;}
 
     private:
@@ -33,6 +33,7 @@ namespace jupiter::rendering
         Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator;
 
         friend class DirectXDevice;
+        friend class DirectXCommandList;
 
     };
 
