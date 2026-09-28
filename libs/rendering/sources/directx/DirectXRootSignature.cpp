@@ -28,4 +28,9 @@ namespace jupiter::rendering
         std::cout << "[Soleil] Impossible de creer une root signature" << std::endl;
     }
 
+    void DirectXRootSignature::destroyRootSignature()
+    {
+
+    }
+
 }

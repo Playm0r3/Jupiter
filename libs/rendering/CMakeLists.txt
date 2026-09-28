@@ -16,6 +16,7 @@ add_library(soleil STATIC
         ${DX}/DirectXPipelineState.cpp
         ${DX}/DirectXCommandList.cpp
         ${DX}/DirectXFence.cpp
+        ${DX}/DirectXRootSignature.cpp
 
         ${IN}/CommandListType.cpp
         ${IN}/HeapDescriptorType.cpp
@@ -32,6 +33,8 @@ add_library(soleil STATIC
         ${IN}/ResourceState.cpp
         ${IN}/TextureLayout.cpp
         ${IN}/InputFormat.cpp
+
+        sources/InterfaceAllocator.cpp
 )
 
 message("[Soleil] Build pour : ${TARGET_ARCHITECTURE}")
