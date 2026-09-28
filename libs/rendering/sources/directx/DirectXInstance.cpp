@@ -14,6 +14,13 @@ namespace jupiter::rendering
         {
             debugController->EnableDebugLayer();
             std::cout << "[Soleil] Couche de debuggage active !" << std::endl;
+
+            if (SUCCEEDED(debugController.As(&infoQueue)))
+            {
+                infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, TRUE);
+                infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, TRUE);
+                infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, TRUE);
+            }
         }
 #endif
     }

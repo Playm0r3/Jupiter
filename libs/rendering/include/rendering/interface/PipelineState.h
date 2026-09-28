@@ -20,8 +20,8 @@ namespace jupiter::rendering
 
     public:
 
-        PipelineState();
-        virtual ~PipelineState() = 0;
+        PipelineState() = default;
+        virtual ~PipelineState() = default;
 
         virtual void createPipelineState(Device* device, PipelineStateDescriptor* descriptor) = 0;
         virtual void destroyPipelineState() = 0;

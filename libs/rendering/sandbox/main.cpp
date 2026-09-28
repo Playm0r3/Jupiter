@@ -130,7 +130,7 @@ int main()
         pipelineDescriptor->pixelShader = pixel;
         pipelineDescriptor->rasterizer = &rasterizer;
         pipelineDescriptor->blend = &blend;
-        pipelineDescriptor->numRenderTargets = 3;
+        pipelineDescriptor->numRenderTargets = 1;
 
         PipelineState* pipeline = allocator->allocatePipelineState();
         pipeline->createPipelineState(device, pipelineDescriptor);
@@ -163,8 +163,10 @@ int main()
         hProps.creationNodeMask = 1;
         hProps.visibleNodeMask = 1;
 
-        HeapProperties hPropsUpload = hProps;
+        HeapProperties hPropsUpload = {};
         hPropsUpload.heapType = WM_HEAP_TYPE_UPLOAD;
+        hPropsUpload.creationNodeMask = 1;
+        hPropsUpload.visibleNodeMask = 1;
 
         ResourceDescriptor rDesc = {};
         rDesc.dimension = WM_RESOURCE_DIMENSION_BUFFER;
@@ -176,7 +178,8 @@ int main()
         rDesc.sampleDescriptorCount = 1;
         rDesc.sampleDescriptorQuality = 0;
         rDesc.layout = WM_TEXTURE_LAYOUT_ROW_MAJOR;
-        rDesc.resourceFlags = 0xffffffff;
+        rDesc.resourceFlags = 0x0;
+        rDesc.depthOrArraySize = 1;
 
         CommittedResourceDescriptor vertexCommittedResource = {};
         vertexCommittedResource.resourceDescriptor = &rDesc;
@@ -186,11 +189,11 @@ int main()
         vertexCommittedResource.heapFlags = 0;
 
         CommittedResourceDescriptor vertexCommittedResourceUpload = {};
-        vertexCommittedResource.resourceDescriptor = &rDesc;
-        vertexCommittedResource.resource = nullptr; // Indispensable
-        vertexCommittedResource.resourceState = WM_RESOURCE_STATE_GENERIC_READ;
-        vertexCommittedResource.heapProperties = &hPropsUpload;
-        vertexCommittedResource.heapFlags = 0;
+        vertexCommittedResourceUpload.resourceDescriptor = &rDesc;
+        vertexCommittedResourceUpload.resource = nullptr; // Indispensable
+        vertexCommittedResourceUpload.resourceState = WM_RESOURCE_STATE_GENERIC_READ;
+        vertexCommittedResourceUpload.heapProperties = &hPropsUpload;
+        vertexCommittedResourceUpload.heapFlags = 0;
 
         device->createCommitedResource(&vertexCommittedResource);
         device->createCommitedResource(&vertexCommittedResourceUpload);

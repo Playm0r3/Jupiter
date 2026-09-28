@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <comdef.h>
 
 #include "rendering/directx/DirectXPipelineState.h"
 #include "rendering/directx/DirectXDevice.h"
@@ -54,11 +55,16 @@ namespace jupiter::rendering
         desc.NumRenderTargets = descriptor->numRenderTargets;
         desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
         desc.SampleDesc.Count = 1;
+        desc.SampleDesc.Quality = 0;
 
         HRESULT hr = d->device->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(&pipelineState));
         if (!FAILED(hr)) return;
 
+        _com_error err(hr);
+        LPCSTR errMsg = err.ErrorMessage();
+
         std::cout << "[Soleil] Impossible de créer un GraphicsPipelineState" << std::endl;
+        std::cout << "[Soleil Error Message] : " << errMsg << std::endl;
     }
 
     void DirectXPipelineState::destroyPipelineState()

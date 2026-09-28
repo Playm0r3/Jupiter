@@ -23,7 +23,7 @@ namespace jupiter::rendering
         Blend dstBlendAlpha = WM_BLEND_ZERO;
         BlendOperation blendOperationAlpha = WM_BLEND_OPERATION_ADD;
         LogicOperation logicOperation = WM_LOGIC_OPERATION_NOOP;
-        uint8_t renderTargetWriteMask = 0xFF; // all renderTargetWriteMask
+        uint8_t renderTargetWriteMask = 0x0F; // all renderTargetWriteMask
     };
 }
 

@@ -21,7 +21,7 @@ namespace jupiter::rendering
         uint64_t allignment = 0;
         uint64_t width = 0;
         uint32_t height = 0;
-        uint16_t depthOrArraySize = 0;
+        uint16_t depthOrArraySize = 1;
         uint16_t mipLevels = 0;
         InputFormat format = WM_INPUT_FORMAT_FLOAT;
         uint32_t sampleDescriptorCount = 0;
