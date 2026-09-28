@@ -15,9 +15,11 @@
 #include "DirectXDescriptorHeap.h"
 #include "DirectXSwapchain.h"
 #include "DirectXCommandAllocator.h"
+#include "DirectXCommandList.h"
 #include "DirectXCompiler.h"
 #include "DirectXRootSignature.h"
 #include "DirectXResource.h"
+#include "DirectXPipelineState.h"
 
 namespace jupiter::rendering
 {
@@ -56,6 +58,12 @@ namespace jupiter::rendering
 
         Compiler* allocateCompiler() override { return new DirectXCompiler(); }
         void freeCompiler(Compiler* compiler) override { compiler->destroyCompiler(); }
+
+        PipelineState* allocatePipelineState() override { return new DirectXPipelineState();}
+        void freePipelineState(PipelineState* pipelineState) override {pipelineState->destroyPipelineState();}
+
+        CommandList* allocateCommandList() override {return new DirectXCommandList();}
+        void freeCommandList(CommandList* cmdList) override { cmdList->destroyCommandList();}
 
     };
 

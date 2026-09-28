@@ -14,5 +14,11 @@
 #include "rendering/interface/HeapDescriptor.h"
 #include "rendering/interface/Resource.h"
 #include "rendering/interface/InputLayout.h"
+#include "rendering/interface/PipelineStateDescriptor.h"
+#include "rendering/interface/CommandListDescriptor.h"
+#include "rendering/interface/HeapProperties.h"
+#include "rendering/interface/ResourceDescriptor.h"
+#include "rendering/interface/CommitedResourceDescriptor.h"
+#include "rendering/interface/ResourceBarrier.h"
 
 #endif //JUPITER_SOLEIL_H

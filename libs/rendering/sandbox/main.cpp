@@ -4,16 +4,22 @@
 
 #include "soleil.h"
 
+#include <d3d12.h>
 #include<SDL3/SDL.h>
 #include <iostream>
 
 using namespace jupiter::rendering;
 
+struct Vertex
+{
+    float position[3]{};
+    float color[4]{};
+};
+
 int main()
 {
     try
     {
-
         if (!SDL_Init(SDL_INIT_VIDEO))
             throw std::exception(SDL_GetError());
 
@@ -90,25 +96,133 @@ int main()
         jupiter::rendering::Compiler* compiler = new jupiter::rendering::DirectXCompiler();
         compiler->createCompiler();
 
-        jupiter::rendering::Shader* vertex = compiler->compileShader(L"main.hlsl", L"VSMain", L"vs_6_0");
-        jupiter::rendering::Shader* pixel = compiler->compileShader(L"main.hlsl", L"PSMain", L"ps_6_0");
+        Shader* vertex = compiler->compileShader(L"main.hlsl", L"VSMain", L"vs_6_0");
+        Shader* pixel = compiler->compileShader(L"main.hlsl", L"PSMain", L"ps_6_0");
 
-        InputLayout* pLayout = new jupiter::rendering::InputLayout();
-        pLayout->semanticName = "POSITION";
-        pLayout->semanticIndex = 0;
-        pLayout->inputFormat = jupiter::rendering::WM_INPUT_FORMAT_FLOAT_3;
-        pLayout->inputSlot = 0;
-        pLayout->alignedByteOffset = 0;
-        pLayout->instanceDataStepRate = 0;
+        InputLayout pLayout = InputLayout();
+        pLayout.semanticName = "POSITION";
+        pLayout.semanticIndex = 0;
+        pLayout.inputFormat = WM_INPUT_FORMAT_FLOAT_3;
+        pLayout.inputSlot = 0;
+        pLayout.alignedByteOffset = 0;
+        pLayout.instanceDataStepRate = 0;
 
-        InputLayout* cLayout = new jupiter::rendering::InputLayout();
-        cLayout->semanticName = "COLOR";
-        cLayout->semanticIndex = 0;
-        cLayout->inputFormat = jupiter::rendering::WM_INPUT_FORMAT_FLOAT_4;
-        cLayout->inputSlot = 0;
-        cLayout->alignedByteOffset = 12;
-        cLayout->instanceDataStepRate = 0;
+        InputLayout cLayout = InputLayout();
+        cLayout.semanticName = "COLOR";
+        cLayout.semanticIndex = 0;
+        cLayout.inputFormat = WM_INPUT_FORMAT_FLOAT_4;
+        cLayout.inputSlot = 0;
+        cLayout.alignedByteOffset = 12;
+        cLayout.instanceDataStepRate = 0;
 
+        InputLayout* layout = new InputLayout[2] {};
+        layout[0] = pLayout;
+        layout[1] = cLayout;
+
+        RasterizerDescriptor rasterizer = {};
+        BlendDescriptor blend = {};
+
+        PipelineStateDescriptor* pipelineDescriptor = new PipelineStateDescriptor();
+        pipelineDescriptor->inputLayout = layout;
+        pipelineDescriptor->inputLayoutCount = 2;
+        pipelineDescriptor->rootSignature = root;
+        pipelineDescriptor->vertexShader = vertex;
+        pipelineDescriptor->pixelShader = pixel;
+        pipelineDescriptor->rasterizer = &rasterizer;
+        pipelineDescriptor->blend = &blend;
+        pipelineDescriptor->numRenderTargets = 3;
+
+        PipelineState* pipeline = allocator->allocatePipelineState();
+        pipeline->createPipelineState(device, pipelineDescriptor);
+
+        CommandListDescriptor clDescriptor = {};
+        clDescriptor.allocator = a;
+        clDescriptor.device = device;
+        clDescriptor.pipeline = pipeline;
+        clDescriptor.type = WM_COMMAND_LIST_TYPE_DIRECT;
+        clDescriptor.nodeMask = 0;
+
+        CommandList* cmdList = allocator->allocateCommandList();
+        cmdList->createCommandList(&clDescriptor);
+        cmdList->close();
+
+        Vertex triangleVertices[] =
+        {
+            { { 0.0f, 0.25f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+            { { 0.25f, -0.25f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+            { { -0.25f, -0.25f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
+        };
+
+        const uint32_t vertexBufferCount = sizeof(triangleVertices);
+
+        Resource* vertexBufferResource;
+        Resource* vertexBufferResourceUpload;
+
+        HeapProperties hProps = {};
+        hProps.heapType = WM_HEAP_TYPE_DEFAULT;
+        hProps.creationNodeMask = 1;
+        hProps.visibleNodeMask = 1;
+
+        HeapProperties hPropsUpload = hProps;
+        hPropsUpload.heapType = WM_HEAP_TYPE_UPLOAD;
+
+        ResourceDescriptor rDesc = {};
+        rDesc.dimension = WM_RESOURCE_DIMENSION_BUFFER;
+        rDesc.allignment = 0;
+        rDesc.width = vertexBufferCount;
+        rDesc.height = 1;
+        rDesc.mipLevels = 1;
+        rDesc.format = WM_INPUT_FORMAT_UNDEFINED;
+        rDesc.sampleDescriptorCount = 1;
+        rDesc.sampleDescriptorQuality = 0;
+        rDesc.layout = WM_TEXTURE_LAYOUT_ROW_MAJOR;
+        rDesc.resourceFlags = 0xffffffff;
+
+        CommittedResourceDescriptor vertexCommittedResource = {};
+        vertexCommittedResource.resourceDescriptor = &rDesc;
+        vertexCommittedResource.resource = nullptr; // Indispensable
+        vertexCommittedResource.resourceState = WM_RESOURCE_STATE_COMMON;
+        vertexCommittedResource.heapProperties = &hProps;
+        vertexCommittedResource.heapFlags = 0;
+
+        CommittedResourceDescriptor vertexCommittedResourceUpload = {};
+        vertexCommittedResource.resourceDescriptor = &rDesc;
+        vertexCommittedResource.resource = nullptr; // Indispensable
+        vertexCommittedResource.resourceState = WM_RESOURCE_STATE_GENERIC_READ;
+        vertexCommittedResource.heapProperties = &hPropsUpload;
+        vertexCommittedResource.heapFlags = 0;
+
+        device->createCommitedResource(&vertexCommittedResource);
+        device->createCommitedResource(&vertexCommittedResourceUpload);
+
+        Resource* vertexBuffer = vertexCommittedResource.resource;
+        Resource* vertexBufferUpload = vertexCommittedResourceUpload.resource;
+
+        vertexBufferUpload->copyToUpload(triangleVertices, vertexBufferCount * sizeof(float));
+
+        a->reset();
+        cmdList->reset(a);
+
+        ResourceTransitionBarrier transition = {};
+        transition.resource = vertexBuffer;
+        transition.stateBefore = WM_RESOURCE_STATE_COMMON;
+        transition.stateAfter = WM_RESOURCE_STATE_COPY_DESTINATION;
+        transition.subResource = 0xffffffff;
+
+        ResourceBarrier barriers[1]{};
+        barriers[0].transition = &transition;
+
+        cmdList->resourceBarrier(1, &barriers[0]);
+        cmdList->copyResource(vertexBuffer, vertexBufferUpload);
+
+        barriers[0].transition->stateBefore = WM_RESOURCE_STATE_COPY_DESTINATION;
+        barriers[0].transition->stateAfter = WM_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER;
+
+        cmdList->resourceBarrier(1, &barriers[0]);
+        cmdList->close();
+
+        CommandList* cmdLists[] = {cmdList};
+        cmdQueue->executeCommandLists(1, cmdLists);
 
         bool running = true;
         while (running)
@@ -126,8 +240,7 @@ int main()
             //update
         }
 
-        delete pLayout;
-        delete cLayout;
+        delete pipelineDescriptor;
 
     } catch (std::exception& e)
     {

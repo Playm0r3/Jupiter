@@ -14,6 +14,7 @@
 #include "interface/DescriptorHeap.h"
 #include "interface/RootSignature.h"
 #include "interface/Swapchain.h"
+#include "interface/PipelineState.h"
 
 namespace jupiter::rendering
 {
@@ -51,6 +52,12 @@ namespace jupiter::rendering
 
         virtual Compiler* allocateCompiler() = 0;
         virtual void freeCompiler(Compiler* compiler) = 0;
+
+        virtual PipelineState* allocatePipelineState() = 0;
+        virtual void freePipelineState(PipelineState* pipelineState) = 0;
+
+        virtual CommandList* allocateCommandList() = 0;
+        virtual void freeCommandList(CommandList* commandList) = 0;
 
         static InterfaceAllocator* selectApi(Api api);
     };
