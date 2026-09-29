@@ -227,6 +227,11 @@ int main()
         CommandList* cmdLists[] = {cmdList};
         cmdQueue->executeCommandLists(1, cmdLists);
 
+        Fence* fence = allocator->allocateFence();
+        fence->createFence(1, device);
+        fence->createEvent();
+        cmdQueue->signal(fence);
+
         bool running = true;
         while (running)
         {

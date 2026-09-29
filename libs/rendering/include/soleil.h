@@ -20,5 +20,6 @@
 #include "rendering/interface/ResourceDescriptor.h"
 #include "rendering/interface/CommitedResourceDescriptor.h"
 #include "rendering/interface/ResourceBarrier.h"
+#include "rendering/interface/Fence.h"
 
 #endif //JUPITER_SOLEIL_H

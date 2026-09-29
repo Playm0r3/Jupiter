@@ -59,6 +59,9 @@ namespace jupiter::rendering
         virtual CommandList* allocateCommandList() = 0;
         virtual void freeCommandList(CommandList* commandList) = 0;
 
+        virtual Fence* allocateFence() = 0;
+        virtual void freeFence(Fence* fence) = 0;
+
         static InterfaceAllocator* selectApi(Api api);
     };
 

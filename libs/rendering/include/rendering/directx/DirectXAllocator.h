@@ -65,6 +65,9 @@ namespace jupiter::rendering
         CommandList* allocateCommandList() override {return new DirectXCommandList();}
         void freeCommandList(CommandList* cmdList) override { cmdList->destroyCommandList();}
 
+        Fence* allocateFence() override { return new DirectXFence(); }
+        void freeFence(Fence* fence) override { fence->destroyFence(); }
+
     };
 
 }

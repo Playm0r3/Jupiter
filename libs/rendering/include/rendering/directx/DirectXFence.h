@@ -34,6 +34,8 @@ namespace jupiter::rendering
         Microsoft::WRL::ComPtr<ID3D12Fence> fence;
         HANDLE fenceEvent;
 
+        uint32_t fenceValue;
+
         friend class DirectXCommandQueue;
 
     };
