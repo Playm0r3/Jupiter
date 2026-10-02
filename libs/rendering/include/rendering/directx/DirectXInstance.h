@@ -17,7 +17,7 @@ namespace jupiter::rendering
     public:
 
         DirectXInstance() = default;
-        ~DirectXInstance() = default;
+        ~DirectXInstance() override = default;
 
         void createInstance() override;
         void destroyInstance() override;
@@ -25,6 +25,7 @@ namespace jupiter::rendering
     private:
 
         Microsoft::WRL::ComPtr<ID3D12Debug> debugController;
+        Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
 
     };
 }

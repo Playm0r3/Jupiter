@@ -7,12 +7,13 @@
 
 #include "../interface/Device.h"
 
-#include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
 
 namespace jupiter::rendering
 {
+    struct HeapProperties;
+    struct ResourceDescriptor;
 
     class DirectXDevice : public Device
     {
@@ -20,12 +21,17 @@ namespace jupiter::rendering
     public:
 
         DirectXDevice() = default;
-        ~DirectXDevice() = default;;
+        ~DirectXDevice() override = default;
 
         void createDevice() override;
         void destroyDevice() override;
 
-        DirectXDevice* getHandle() override { return this; }
+        uint32_t getDescriptorHandleIncrementSize(HeapDescriptorType type) override;
+        void createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh) override;
+        void createCommandAllocator(CommandListType type, CommandAllocator* allocator) override;
+        void createCommitedResource(CommittedResourceDescriptor* descriptor) override;
+
+        DirectXDevice* getDHandle() override { return this; }
 
     private:
 
@@ -35,7 +41,17 @@ namespace jupiter::rendering
         Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter;
         Microsoft::WRL::ComPtr<ID3D12Device> device;
 
+        D3D12_HEAP_PROPERTIES getHeapProperties(HeapProperties* heapProperties);
+        D3D12_RESOURCE_DESC getResourceDescriptor(ResourceDescriptor* resourceDescriptor);
+
         friend class DirectXCommandQueue;
+        friend class DirectXSwapchain;
+        friend class DirectXDescriptorHeap;
+        friend class DirectXRootSignature;
+        friend class DirectXPipelineState;
+        friend class DirectXPipelineState;
+        friend class DirectXCommandList;
+        friend class DirectXFence;
 
     };
 
