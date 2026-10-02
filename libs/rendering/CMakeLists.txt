@@ -33,6 +33,8 @@ add_library(soleil STATIC
         ${IN}/ResourceState.cpp
         ${IN}/TextureLayout.cpp
         ${IN}/InputFormat.cpp
+        ${IN}/Resource.cpp
+        ${IN}/PrimitiveTopology.cpp
 
         sources/InterfaceAllocator.cpp
 )

@@ -24,6 +24,8 @@ namespace jupiter::rendering
         void createDescriptorHeap(Device* device, HeapDescriptor* descriptor) override;
         void destroyDescriptorHeap() override;
 
+        void* getCpuHandleWithOffset(long offset) override;
+
         DirectXDescriptorHeap* getDHandle() override { return this; }
 
     private:
@@ -33,6 +35,7 @@ namespace jupiter::rendering
         Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap;
 
         friend class DirectXCpuDescriptorHandle;
+        friend class DirectXCommandList;
 
     };
 

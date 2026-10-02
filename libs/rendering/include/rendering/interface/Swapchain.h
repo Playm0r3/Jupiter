@@ -27,6 +27,7 @@ namespace jupiter::rendering
 
         virtual uint32_t getCurrentBackBufferIndex() = 0;
         virtual void getBuffer(uint32_t bufferIndex, Resource* resource) = 0;
+        virtual void present(uint32_t interval, uint32_t flags) = 0;
 
         virtual DirectXSwapchain* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api"}; }
     };

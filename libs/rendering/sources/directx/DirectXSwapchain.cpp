@@ -52,4 +52,12 @@ namespace jupiter::rendering
         DirectXResource* r = resource->getDHandle();
         swapchain->GetBuffer(index, IID_PPV_ARGS(&r->resource));
     }
+
+    void DirectXSwapchain::present(uint32_t interval, uint32_t flags)
+    {
+        HRESULT hr = swapchain->Present(interval, flags);
+        if (!FAILED(hr)) return;
+
+        std::cout << "[Soleil] Impossible de presenter la nouvelle image !" << std::endl;
+    }
 }

@@ -42,10 +42,10 @@ namespace jupiter::rendering
         commandQueue->ExecuteCommandLists(commandListCount, list.data());
     }
 
-    void DirectXCommandQueue::signal(Fence* fence, uint64_t f)
+    void DirectXCommandQueue::signal(Fence* fence)
     {
         DirectXFence* df = fence->getDHandle();
-        HRESULT hr = commandQueue->Signal(df->fence.Get(), f);
+        HRESULT hr = commandQueue->Signal(df->fence.Get(), ++df->fenceValue);
         if (!FAILED(hr)) return;
 
         std::cout << "[Soleil] Impossible de signaler un arrêt d'attente du GPU" << std::endl;

@@ -26,7 +26,7 @@ namespace jupiter::rendering
         void destroyCommandQueue() override;
 
         void executeCommandLists(uint32_t commandListCount, CommandList** commandLists) override;
-        void signal(Fence* fence, uint64_t f) override;
+        void signal(Fence* fence) override;
 
         DirectXCommandQueue* getDHandle() override { return this; }
 

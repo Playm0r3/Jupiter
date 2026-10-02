@@ -22,10 +22,11 @@ namespace jupiter::rendering
         virtual ~Fence() = default;
 
         virtual void createFence(uint64_t initValue, Device* device) = 0;
-        virtual void destroyFence(uint64_t fenceValue) = 0;
+        virtual void destroyFence() = 0;
 
         virtual void createEvent() = 0;
-        virtual void waitForPreviousFrame(uint64_t fenceValue) = 0;
+        virtual void waitForPreviousFrame() = 0;
+        virtual void waitGpuIdle() = 0;
 
         virtual DirectXFence* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api !"};}
 

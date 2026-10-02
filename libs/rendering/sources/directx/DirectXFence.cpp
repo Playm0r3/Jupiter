@@ -14,31 +14,33 @@ namespace jupiter::rendering
     {
         const DirectXDevice* d = device->getDHandle();
         HRESULT hr = d->device->CreateFence(initValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
-        if (!FAILED(hr)) return;
+        fenceEvent = CreateEvent(nullptr, false, false, nullptr);
+        fenceValue = 1;
+
+        if (!FAILED(hr) && fenceEvent != nullptr) return;
 
         std::cout << "[Soleil] Impossible de creer une barrier de syncronisation !" << std::endl;
     }
 
-    void DirectXFence::destroyFence(uint64_t fenceValue)
+    void DirectXFence::destroyFence()
     {
-        waitForPreviousFrame(fenceValue);
+        waitForPreviousFrame();
         CloseHandle(fenceEvent);
     }
 
     void DirectXFence::createEvent()
     {
-        fenceEvent = CreateEvent(nullptr, false, false, nullptr);
-        if (fenceEvent != nullptr) return;
-
-        std::cout << "[Soleil] Impossible de creer un evenenement de barrier de syncronisation !" << std::endl;
+        // Vide pour le moment
     }
 
-    void DirectXFence::waitForPreviousFrame(uint64_t fenceValue)
+    void DirectXFence::waitForPreviousFrame()
     {
-        if (fence->GetCompletedValue() < fenceValue)
-        {
-            fence->SetEventOnCompletion(fenceValue, fenceEvent);
-            WaitForSingleObject(fenceEvent, INFINITE);
-        }
+        // Vide pour le moment
+    }
+
+    void DirectXFence::waitGpuIdle()
+    {
+        fence->SetEventOnCompletion(fenceValue, fenceEvent);
+        WaitForSingleObject(fenceEvent, 20000);
     }
 }

@@ -32,6 +32,7 @@ namespace jupiter::rendering
         Microsoft::WRL::ComPtr<ID3DBlob> signature;
 
         friend class DirectXPipelineState;
+        friend class DirectXCommandList;
 
     };
 

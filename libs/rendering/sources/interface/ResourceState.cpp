@@ -21,8 +21,12 @@ namespace jupiter::rendering::utils
             return D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER;
         case ResourceState::WM_RESOURCE_STATE_INDEX_BUFFER:
             return D3D12_RESOURCE_STATE_INDEX_BUFFER;
+        case ResourceState::WM_RESOURCE_STATE_RENDER_TARGET:
+            return D3D12_RESOURCE_STATE_RENDER_TARGET;
+        case ResourceState::WM_RESOURCE_STATE_PRESENT:
+            return D3D12_RESOURCE_STATE_PRESENT;
         default:
-            return D3D12_RESOURCE_STATE_COMMON;;
+            return D3D12_RESOURCE_STATE_COMMON;
         }
     }
 

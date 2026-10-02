@@ -22,10 +22,11 @@ namespace jupiter::rendering
         ~DirectXFence() override = default;
 
         void createFence(uint64_t initValue, Device* device) override;
-        void destroyFence(uint64_t fenceValue) override;
+        void destroyFence() override;
 
         void createEvent() override;
-        void waitForPreviousFrame(uint64_t fenceValue)override;
+        void waitForPreviousFrame()override;
+        void waitGpuIdle() override;
 
         DirectXFence* getDHandle() override {return this;}
 

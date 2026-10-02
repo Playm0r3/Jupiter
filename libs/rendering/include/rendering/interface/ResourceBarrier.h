@@ -16,7 +16,7 @@ namespace jupiter::rendering
     {
         ResourceBarrierType type = WM_RESOURCE_BARRIER_TYPE_TRANSITION;
         ResourceBarrierFlags flag = WM_RESOURCE_BARRIER_FLAGS_NONE;
-        ResourceTransitionBarrier* transition = nullptr;
+        ResourceTransitionBarrier* transition = new ResourceTransitionBarrier();;
     };
 
 }

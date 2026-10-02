@@ -26,7 +26,7 @@ namespace jupiter::rendering
         virtual void destroyCommandQueue() = 0;
 
         virtual void executeCommandLists(uint32_t commandListCount, CommandList** commandLists) = 0;
-        virtual void signal(Fence* fence, uint64_t f) = 0;
+        virtual void signal(Fence* fence) = 0;
 
         virtual DirectXCommandQueue* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api"};}
     };

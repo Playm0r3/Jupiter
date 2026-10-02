@@ -28,6 +28,7 @@ namespace jupiter::rendering
 
         uint32_t getCurrentBackBufferIndex() override;
         void getBuffer(uint32_t bufferIndex, Resource* resource) override;
+        void present(uint32_t interval, uint32_t flags) override;
 
         DirectXSwapchain* getDHandle() override { return this; }
 

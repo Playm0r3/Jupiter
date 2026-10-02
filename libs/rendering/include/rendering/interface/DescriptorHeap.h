@@ -25,6 +25,8 @@ namespace jupiter::rendering
         virtual void createDescriptorHeap(Device* device, HeapDescriptor* descriptor) = 0;
         virtual void destroyDescriptorHeap() = 0;
 
+        virtual void* getCpuHandleWithOffset(long offset) = 0;
+
         virtual DirectXDescriptorHeap* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api ! "}; }
     };
 }

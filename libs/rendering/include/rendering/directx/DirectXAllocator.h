@@ -20,6 +20,7 @@
 #include "DirectXRootSignature.h"
 #include "DirectXResource.h"
 #include "DirectXPipelineState.h"
+#include "DirectXFence.h"
 
 namespace jupiter::rendering
 {

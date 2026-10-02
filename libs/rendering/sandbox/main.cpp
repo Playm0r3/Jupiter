@@ -16,6 +16,54 @@ struct Vertex
     float color[4]{};
 };
 
+void populateCommandList(CommandList* list, CommandAllocator* allocator, PipelineState* pipeline, RootSignature* rootSignature, uint32_t frameIndex, Resource* frames[3], DescriptorHeap* rtvHeap, uint32_t descriptorSize, Resource* vertexBuffer)
+{
+    allocator->reset();
+    list->reset(allocator, pipeline);
+
+    Viewport viewport {};
+    viewport.topLeftX = 0;
+    viewport.topLeftY = 0;
+    viewport.height = 720;
+    viewport.width = 1080;
+    viewport.minDepth = 0;
+    viewport.maxDepth = 1.f;
+
+    Scissor scissor{};
+    scissor.left = 0;
+    scissor.top = 0;
+    scissor.right = 720L;
+    scissor.bottom = 1080L;
+
+    list->setGraphicsRootSignature(rootSignature);
+    list->rootSignatureSetViewPort(1, &viewport);
+    list->rootSignatureSetScissorRects(1, &scissor);
+
+    ResourceBarrier barrier{};
+    barrier.transition->resource = frames[frameIndex];
+    barrier.transition->stateBefore = WM_RESOURCE_STATE_PRESENT;
+    barrier.transition->stateAfter = WM_RESOURCE_STATE_RENDER_TARGET;
+    barrier.transition->subResource = 0xffffffff;
+
+    list->resourceBarrier(1, &barrier);
+
+    void* descriptor = rtvHeap->getCpuHandleWithOffset(frameIndex * descriptorSize);
+    list->oMSetRenderTarget(1, descriptor, false, nullptr);
+
+    float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
+    list->clearRenderTargetView(descriptor, clearColor, 0, nullptr);
+    list->setPrimitiveTopology(WM_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+    list->setVertexBuffer(0, 1, vertexBuffer);
+    list->drawInstanced(3, 1, 0, 0);
+
+    barrier.transition->resource = frames[frameIndex];
+    barrier.transition->stateBefore = WM_RESOURCE_STATE_RENDER_TARGET;
+    barrier.transition->stateAfter = WM_RESOURCE_STATE_PRESENT;
+
+    list->resourceBarrier(1, &barrier);
+    list->close();
+}
+
 int main()
 {
     try
@@ -201,10 +249,11 @@ int main()
         Resource* vertexBuffer = vertexCommittedResource.resource;
         Resource* vertexBufferUpload = vertexCommittedResourceUpload.resource;
 
+        vertexBuffer->setResourceSizeAndStride(sizeof(triangleVertices), sizeof(Vertex));
         vertexBufferUpload->copyToUpload(triangleVertices, vertexBufferCount * sizeof(float));
 
         a->reset();
-        cmdList->reset(a);
+        cmdList->reset(a, nullptr);
 
         ResourceTransitionBarrier transition = {};
         transition.resource = vertexBuffer;
@@ -229,8 +278,9 @@ int main()
 
         Fence* fence = allocator->allocateFence();
         fence->createFence(1, device);
-        fence->createEvent();
         cmdQueue->signal(fence);
+
+        fence->waitGpuIdle();
 
         bool running = true;
         while (running)
@@ -245,7 +295,18 @@ int main()
                 }
             }
 
-            //update
+            frameIndex = swapchain->getCurrentBackBufferIndex();
+
+            populateCommandList(cmdList, a, pipeline, root, frameIndex,
+                resources, descriptorHeap, descriptorSize, vertexBuffer);
+
+            CommandList* cs[] = {cmdList};
+            cmdQueue->executeCommandLists(_countof(cs), cs);
+
+            swapchain->present(1, 0);
+
+            cmdQueue->signal(fence);
+            fence->waitGpuIdle();
         }
 
         delete pipelineDescriptor;

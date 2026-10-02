@@ -22,9 +22,18 @@ namespace jupiter::rendering
         virtual void createResource() = 0;
         virtual void destroyResource() = 0;
 
+        virtual void setResourceSize(uint32_t size);
+        virtual void setResourceStride(uint32_t stride);
+        virtual void setResourceSizeAndStride(uint32_t size, uint32_t stride);
+
         virtual void copyToUpload(void* data, size_t size) = 0;
 
         virtual DirectXResource* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api !"}; }
+
+    protected:
+
+        uint32_t stride = 0;
+        uint32_t size = 0;
     };
 
 }
