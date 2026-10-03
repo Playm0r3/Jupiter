@@ -14,6 +14,7 @@ endif()
 
 include_directories(externs/dxc/inc)
 
+add_subdirectory(libs/math)
 #add_subdirectory(libs/physics)
 #add_subdirectory(libs/scripting)
 add_subdirectory(libs/rendering)
