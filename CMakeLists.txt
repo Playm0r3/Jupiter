@@ -17,7 +17,7 @@ include_directories(externs/dxc/inc)
 #add_subdirectory(libs/physics)
 #add_subdirectory(libs/scripting)
 add_subdirectory(libs/rendering)
-#add_subdirectory(libs/engine)
+add_subdirectory(engine)
 #add_subdirectory(editor)
 
 if(BUILD_TESTS)
