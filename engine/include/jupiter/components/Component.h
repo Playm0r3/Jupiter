@@ -7,8 +7,6 @@
 
 #include <string>
 
-#include "descriptors/ComponentDescriptor.h"
-
 namespace jupiter::engine
 {
 
@@ -19,14 +17,11 @@ namespace jupiter::engine
 
     public:
 
-        std::string name;
-        Astre* astre;
+        std::string name{""};
+        Astre* astre = nullptr;
 
-        Component();
-        virtual ~Component() = default;
-
-        virtual void createComponent(ComponentDescriptor* descriptor) = 0;
-        virtual void destroyComponent() = 0;
+        Component() = default;
+        virtual ~Component() = 0;
 
     };
 }

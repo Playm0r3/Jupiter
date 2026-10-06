@@ -14,6 +14,16 @@ endif()
 
 include_directories(externs/dxc/inc)
 
+include(fetchContent)
+
+FetchContent_Declare(
+        SDL3
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-3.2.8
+)
+
+FetchContent_MakeAvailable(SDL3)
+
 add_subdirectory(libs/math)
 #add_subdirectory(libs/physics)
 #add_subdirectory(libs/scripting)

@@ -27,9 +27,11 @@ namespace jupiter::rendering
         void destroyDevice() override;
 
         uint32_t getDescriptorHandleIncrementSize(HeapDescriptorType type) override;
-        void createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh) override;
         void createCommandAllocator(CommandListType type, CommandAllocator* allocator) override;
         void createCommitedResource(CommittedResourceDescriptor* descriptor) override;
+
+        void createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh) override;
+        void createDepthStencilView(Resource* resource, CpuDescriptorHandle* cdh, DepthBufferDescriptor* descriptor) override;
 
         DirectXDevice* getDHandle() override { return this; }
 

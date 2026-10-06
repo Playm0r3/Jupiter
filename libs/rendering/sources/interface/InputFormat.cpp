@@ -15,6 +15,8 @@ namespace jupiter::rendering::utils
             return DXGI_FORMAT_R32G32B32_FLOAT;
         case InputFormat::WM_INPUT_FORMAT_FLOAT_4:
             return DXGI_FORMAT_R32G32B32A32_FLOAT;
+        case InputFormat::WM_INPUT_FORMAT_FLOAT_32_BIT:
+            return DXGI_FORMAT_D32_FLOAT;
         case InputFormat::WM_INPUT_FORMAT_UNDEFINED:
         default:
             return DXGI_FORMAT_UNKNOWN;

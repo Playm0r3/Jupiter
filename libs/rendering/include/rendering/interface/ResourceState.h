@@ -18,6 +18,7 @@ namespace jupiter::rendering
         WM_RESOURCE_STATE_INDEX_BUFFER,
         WM_RESOURCE_STATE_PRESENT,
         WM_RESOURCE_STATE_RENDER_TARGET,
+        WM_RESOURCE_STATE_DEPTH_WRITE,
     };
 
     namespace utils

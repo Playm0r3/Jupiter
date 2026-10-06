@@ -1,0 +1,1 @@
+Dans la scene compter le nombre de doublons pour activer ou non l'instancing rendering

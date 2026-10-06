@@ -11,6 +11,7 @@
 #include "rendering/interface/ResourceDescriptor.h"
 #include "rendering/interface/HeapProperties.h"
 #include "rendering/interface/InputFormat.h"
+#include "rendering/interface/DepthBufferDescriptor.h"
 
 #include <iostream>
 
@@ -49,6 +50,20 @@ namespace jupiter::rendering
         DirectXCpuDescriptorHandle* handle = cdh->getDHandle();
 
         device->CreateRenderTargetView(r->resource.Get(), nullptr, handle->handle);
+    }
+
+    void DirectXDevice::createDepthStencilView(Resource* resource, CpuDescriptorHandle* cdh,
+        DepthBufferDescriptor* descriptor)
+    {
+        DirectXResource* r = resource->getDHandle();
+        DirectXCpuDescriptorHandle* handle = cdh->getDHandle();
+
+        D3D12_DEPTH_STENCIL_VIEW_DESC desc{};
+        desc.Format = utils::getFormat(descriptor->format);
+        desc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+        desc.Flags = D3D12_DSV_FLAG_NONE;
+
+        device->CreateDepthStencilView(r->resource.Get(), &desc, handle->handle);
     }
 
     void DirectXDevice::createCommandAllocator(CommandListType type, CommandAllocator* allocator)

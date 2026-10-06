@@ -19,6 +19,7 @@ namespace jupiter::math
         double x = 0.0;
         double y = 0.0;
 
+        Vector() = default;
         Vector(double x, double y) : x(x), y(y) {}
         Vector(const Vector& copy) = default;
         Vector(float angle, float rayon) : x(cos(angle) * rayon), y(sin(angle) * rayon) {}
@@ -50,6 +51,7 @@ namespace jupiter::math
         double y = 0.0;
         double z = 0.0;
 
+        Vector3() = default;
         Vector3(double x, double y, double z) : x(x), y(y), z(z) {}
         Vector3(const Vector3& copy) = default;
         Vector3(float rayon, float theta, float phi) : x(cos(theta) * rayon), y(sin(theta) * rayon), z(sin(phi) * rayon) {}
@@ -82,6 +84,7 @@ namespace jupiter::math
         double y = 0.0;
         double z = 0.0;
 
+        Vector4() = default;
         Vector4(double w, double x, double y, double z) : w(w), x(x), y(y), z(z) {};
         Vector4(double w, const Vector3& v);
 

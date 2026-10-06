@@ -2,7 +2,7 @@
 // Created by Warren on 02/10/2026.
 //
 
-#include "math/vectors/Vector.h"
+#include "jmath/vectors/Vector.h"
 
 #include <algorithm>
 #include <exception>

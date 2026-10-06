@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#include "ClearValue.h"
 #include "rendering/interface/ResourceState.h"
 
 namespace jupiter::rendering
@@ -22,6 +23,7 @@ namespace jupiter::rendering
         uint32_t heapFlags = 0;
         ResourceState resourceState = WM_RESOURCE_STATE_COMMON;
         Resource* resource = nullptr;
+        ClearValue clearValue;
     };
 
 }

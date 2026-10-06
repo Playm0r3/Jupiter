@@ -69,6 +69,9 @@ namespace jupiter::rendering
         Fence* allocateFence() override { return new DirectXFence(); }
         void freeFence(Fence* fence) override { fence->destroyFence(); }
 
+        Resource* allocateResource() override {return new DirectXResource();}
+        void freeResource(Resource* resource) override {resource->destroyResource();}
+
     };
 
 }

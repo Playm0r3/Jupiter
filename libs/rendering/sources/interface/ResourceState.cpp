@@ -25,6 +25,8 @@ namespace jupiter::rendering::utils
             return D3D12_RESOURCE_STATE_RENDER_TARGET;
         case ResourceState::WM_RESOURCE_STATE_PRESENT:
             return D3D12_RESOURCE_STATE_PRESENT;
+        case ResourceState::WM_RESOURCE_STATE_DEPTH_WRITE:
+            return D3D12_RESOURCE_STATE_DEPTH_WRITE;
         default:
             return D3D12_RESOURCE_STATE_COMMON;
         }

@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "math/vectors/Vector.h"
-#include "math/utils.h"
+#include "jmath/vectors/Vector.h"
+#include "jmath/utils.h"
 
 using namespace jupiter::math;
 

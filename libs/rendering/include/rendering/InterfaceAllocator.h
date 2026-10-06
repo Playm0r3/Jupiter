@@ -62,6 +62,9 @@ namespace jupiter::rendering
         virtual Fence* allocateFence() = 0;
         virtual void freeFence(Fence* fence) = 0;
 
+        virtual Resource* allocateResource() = 0;
+        virtual void freeResource(Resource* resource) = 0;
+
         static InterfaceAllocator* selectApi(Api api);
     };
 

@@ -6,9 +6,15 @@
 
 namespace jupiter::engine
 {
-    Component* Astre::getComponent(const int& index) const
+    Astre::~Astre()
     {
-        if (index < 0 || index >= static_cast<int>(components.size()))
+        for (int i = 0; i < components.getSize() ; i++)
+            delete components[i];
+    }
+
+    Component* Astre::getComponent(const int& index)
+    {
+        if (index < 0 || index >= static_cast<int>(components.getSize()))
             return nullptr;
 
         return components[index];
