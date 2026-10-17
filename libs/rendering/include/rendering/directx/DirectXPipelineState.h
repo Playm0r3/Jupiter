@@ -25,6 +25,8 @@ namespace jupiter::rendering
         void createPipelineState(Device* device, PipelineStateDescriptor* descriptor) override;
         void destroyPipelineState() override;
 
+        PipelineState* clonePipelineState(std::filesystem::path& filePath) override;
+
         DirectXPipelineState* getDHandle() override { return this;}
 
     private:

@@ -72,6 +72,12 @@ namespace jupiter::rendering
 
     }
 
+    PipelineState* DirectXPipelineState::clonePipelineState(std::filesystem::path& filePath)
+    {
+        DirectXPipelineState* pipeline_state = new DirectXPipelineState{};
+        return pipeline_state;
+    }
+
     D3D12_RASTERIZER_DESC DirectXPipelineState::getRasterizerDescriptor(RasterizerDescriptor* descriptor)
     {
         D3D12_RASTERIZER_DESC desc{};

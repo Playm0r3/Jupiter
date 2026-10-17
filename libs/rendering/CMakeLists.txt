@@ -35,13 +35,15 @@ add_library(soleil STATIC
         ${IN}/InputFormat.cpp
         ${IN}/Resource.cpp
         ${IN}/PrimitiveTopology.cpp
+        ${IN}/MeshLoader.cpp
 
         sources/InterfaceAllocator.cpp
 )
 
 message("[Soleil] Build pour : ${TARGET_ARCHITECTURE}")
 
-target_include_directories(soleil PUBLIC include PRIVATE ${CMAKE_SOURCE_DIR}/externs/dxc/lib/${TARGET_ARCHITECTURE}/dxcompiler.lib)
+target_include_directories(soleil PUBLIC include PRIVATE "C:/Program Files/Autodesk/FBX/FBX SDK/2020.3.11/include"
+)
 
 target_link_libraries(soleil
     PRIVATE
@@ -49,6 +51,7 @@ target_link_libraries(soleil
         dxgi.lib
         d3dcompiler.lib
         ${CMAKE_SOURCE_DIR}/externs/dxc/lib/${TARGET_ARCHITECTURE}/dxcompiler.lib
+        "C:/Program Files/Autodesk/FBX/FBX SDK/2020.3.11/lib/x64/release/libfbxsdk.lib"
 )
 
 option(RENDERING_BUILD_SANDBOX "Build rendering sandbox executable" ON)

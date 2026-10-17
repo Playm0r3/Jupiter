@@ -24,14 +24,20 @@ namespace jupiter::rendering
 {
     void DirectXCommandList::createCommandList(CommandListDescriptor* desc)
     {
-        DirectXDevice* d = desc->device->getDHandle();
-        DirectXCommandAllocator* a = desc->allocator->getDHandle();
-        DirectXPipelineState* p = desc->pipeline->getDHandle();
+        ID3D12CommandAllocator* all = nullptr;
+        ID3D12Device* dev = nullptr;
+        ID3D12PipelineState* pip = nullptr;
+        const D3D12_COMMAND_LIST_TYPE type = utils::getCommandListTypeFromCommandListType(desc->type);
+        const UINT nod = desc->nodeMask;
 
-        D3D12_COMMAND_LIST_TYPE type = utils::getCommandListTypeFromCommandListType(desc->type);
+        if (desc->device != nullptr) dev = desc->device->getDHandle()->device.Get();
+        if (desc->allocator != nullptr) all = desc->allocator->getDHandle()->allocator.Get();
+        if (desc->pipeline != nullptr) pip = desc->pipeline->getDHandle()->pipelineState.Get();
 
-        HRESULT hr = d->device->CreateCommandList(desc->nodeMask, type, a->allocator.Get(), p->pipelineState.Get(), IID_PPV_ARGS(&commandList));
-        if (!FAILED(hr)) return;
+        if (dev == nullptr) throw std::exception("[Soleil] Device is null can't create CommandList");
+
+        if (const HRESULT hr = dev->CreateCommandList(nod, type, all, pip, IID_PPV_ARGS(&commandList)); !FAILED(hr))
+            return;
 
         std::cout << "[Soleil] Impossible de creer la list de commande" << std::endl;
     }

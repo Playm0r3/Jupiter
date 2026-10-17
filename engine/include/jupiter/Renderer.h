@@ -25,6 +25,8 @@ namespace jupiter
         void createRenderer(Api api, Window* window);
         void destroyRenderer();
 
+        Compiler* compiler;
+
     private:
 
         InterfaceAllocator* allocator;
@@ -36,12 +38,13 @@ namespace jupiter
         DescriptorHeap* dsv;
         CpuDescriptorHandle* rtvDescriptorHandle;
         CpuDescriptorHandle* dsvDescriptorHandle;
+        RootSignature* signature;
 
         CommandQueue* queue;
         CommandAllocator* commandAllocator;
         CommandList* commandList;
 
-        Resource* resources[3];
+        Resource* resources[2];
         Resource* resourceDsv;
 
         uint32_t DescriptorIncrementSizeRTV;

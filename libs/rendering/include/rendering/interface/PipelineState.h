@@ -6,6 +6,7 @@
 #define JUPITER_PIPELINESTATE_H
 
 #include <exception>
+#include <filesystem>
 
 namespace jupiter::rendering
 {
@@ -25,6 +26,8 @@ namespace jupiter::rendering
 
         virtual void createPipelineState(Device* device, PipelineStateDescriptor* descriptor) = 0;
         virtual void destroyPipelineState() = 0;
+
+        virtual PipelineState* clonePipelineState(std::filesystem::path& filePath) = 0;
 
         virtual DirectXPipelineState* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api !"};}
     };

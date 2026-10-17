@@ -32,6 +32,8 @@ namespace jupiter
         dsv = allocator->allocateDescriptorHeap();
         rtvDescriptorHandle = allocator->allocateCpuDescriptorHandle();
         dsvDescriptorHandle = allocator->allocateCpuDescriptorHandle();
+        signature = allocator->allocateRootSignature();
+        commandAllocator = allocator->allocateCommandAllocator();
 
         instance->createInstance();
         device->createDevice();
@@ -97,6 +99,69 @@ namespace jupiter
 
         device->createCommitedResource(&crDesc);
         device->createDepthStencilView(resourceDsv, dsvDescriptorHandle, &dbd);
+
+        device->createCommandAllocator(WM_COMMAND_LIST_TYPE_DIRECT, commandAllocator);
+
+        CommandListDescriptor desc{};
+        desc.allocator = commandAllocator;
+        desc.device = device;
+        desc.nodeMask = 1;
+        desc.type = WM_COMMAND_LIST_TYPE_DIRECT;
+
+        commandList->createCommandList(&desc);
+        commandList->close();
+
+        signature->createRootSignature(device);
+
+        compiler = allocator->allocateCompiler();
+        compiler->createCompiler();
+
+        Shader* vertex = compiler->compileShader(L"Default.hlsl", L"VSMain", L"vs_6_0");
+        Shader* pixel = compiler->compileShader(L"Default.hlsl", L"PSMain", L"ps_6_0");
+
+        InputLayout pLayout = InputLayout();
+        pLayout.semanticName = "POSITION";
+        pLayout.semanticIndex = 0;
+        pLayout.inputFormat = WM_INPUT_FORMAT_FLOAT_3;
+        pLayout.inputSlot = 0;
+        pLayout.alignedByteOffset = 0;
+        pLayout.instanceDataStepRate = 0;
+
+        InputLayout nLayout = InputLayout();
+        pLayout.semanticName = "NORMAL";
+        pLayout.semanticIndex = 0;
+        pLayout.inputFormat = WM_INPUT_FORMAT_FLOAT_3;
+        pLayout.inputSlot = 0;
+        pLayout.alignedByteOffset = 12;
+        pLayout.instanceDataStepRate = 0;
+
+        InputLayout tLayout = InputLayout();
+        pLayout.semanticName = "TEXCOORD";
+        pLayout.semanticIndex = 0;
+        pLayout.inputFormat = WM_INPUT_FORMAT_FLOAT_3;
+        pLayout.inputSlot = 0;
+        pLayout.alignedByteOffset = 24;
+        pLayout.instanceDataStepRate = 0;
+
+        InputLayout* layouts = new InputLayout[3] {pLayout, nLayout, tLayout};
+
+        RasterizerDescriptor rasterizer = {};
+        BlendDescriptor blend = {};
+
+        PipelineStateDescriptor* pipelineDescriptor = new PipelineStateDescriptor();
+        pipelineDescriptor->inputLayout = layouts;
+        pipelineDescriptor->inputLayoutCount = 3;
+        pipelineDescriptor->rootSignature = signature;
+        pipelineDescriptor->vertexShader = vertex;
+        pipelineDescriptor->pixelShader = pixel;
+        pipelineDescriptor->rasterizer = &rasterizer;
+        pipelineDescriptor->blend = &blend;
+        pipelineDescriptor->numRenderTargets = 1;
+
+        PipelineState* pipeline = allocator->allocatePipelineState();
+        pipeline->createPipelineState(device, pipelineDescriptor);
+
+        commandAllocator->createCommandAllocator();
     }
 
     void Renderer::destroyRenderer()
