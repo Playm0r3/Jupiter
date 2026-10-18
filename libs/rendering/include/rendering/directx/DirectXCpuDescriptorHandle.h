@@ -23,6 +23,7 @@ namespace jupiter::rendering
         void destroyCpuDescriptorHandle() override;
 
         void offset(uint32_t rtvDescriptorSize) override;
+        size_t getAddress() override;
 
         DirectXCpuDescriptorHandle* getDHandle() override { return this; }
 

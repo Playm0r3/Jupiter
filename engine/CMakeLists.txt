@@ -6,6 +6,8 @@ add_library(jupiter_engine STATIC
         sources/components/Component.cpp
         sources/utils/ComponentUtilities.cpp
         sources/Window.cpp
+        sources/Renderer.cpp
+        sources/Jupiter.cpp
 )
 
 target_include_directories(jupiter_engine PUBLIC include)

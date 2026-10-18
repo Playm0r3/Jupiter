@@ -19,7 +19,7 @@ namespace jupiter::rendering
         Device* device = nullptr;
         CommandQueue* commandQueue = nullptr;
         uint32_t bufferCount = 3;
-        HWND* windowHandles = nullptr;
+        void* windowHandles = nullptr;
     };
 }
 

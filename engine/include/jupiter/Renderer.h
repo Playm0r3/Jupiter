@@ -6,6 +6,7 @@
 #define JUPITER_RENDERER_H
 
 #include "soleil.h"
+#include "rendering/interface/MeshLoader.h"
 
 namespace jupiter
 {
@@ -13,6 +14,13 @@ namespace jupiter
     using namespace rendering;
 
     class Window;
+
+    struct GpuMesh
+    {
+        Resource* vertices;
+        Resource* indices;
+        uint32_t indexCount;
+    };
 
     class Renderer
     {
@@ -25,7 +33,11 @@ namespace jupiter
         void createRenderer(Api api, Window* window);
         void destroyRenderer();
 
+        void loadMesh(const std::filesystem::path& fileToLoad);
+        void render();
+
         Compiler* compiler;
+        MeshLoader* meshLoader;
 
     private:
 
@@ -38,7 +50,9 @@ namespace jupiter
         DescriptorHeap* dsv;
         CpuDescriptorHandle* rtvDescriptorHandle;
         CpuDescriptorHandle* dsvDescriptorHandle;
+        CpuDescriptorHandle* csuDescriptorHandle;
         RootSignature* signature;
+        PipelineState* pipeline;
 
         CommandQueue* queue;
         CommandAllocator* commandAllocator;
@@ -49,9 +63,15 @@ namespace jupiter
 
         uint32_t DescriptorIncrementSizeRTV;
         uint32_t DescriptorIncrementSizeDSV;
+        uint32_t DescriptorIncrementSizeCSU;
+
+        std::vector<MeshData> loadedMeshes{};
+        std::vector<GpuMesh> loadedResources{};
 
         SwapchainDescriptor getSwapchainDescriptor(Device* device, CommandQueue* queue, Window* window);
         ResourceDescriptor getDepthStencilResourceDescriptor();
+
+        Fence* currentFrameFence;
 
     };
 

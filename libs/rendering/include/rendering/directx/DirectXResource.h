@@ -23,6 +23,8 @@ namespace jupiter::rendering
         void createResource() override;
         void destroyResource() override;
 
+        uint64_t getAddress() override;
+
         void copyToUpload(void* data, size_t size) override;
 
         DirectXResource* getDHandle() override {return this;};

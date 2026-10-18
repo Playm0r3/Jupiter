@@ -22,6 +22,10 @@ namespace jupiter::rendering
         virtual void createResource() = 0;
         virtual void destroyResource() = 0;
 
+        virtual uint64_t getAddress() = 0;
+        uint32_t getSize() const {return size;}
+        uint32_t getStride() const {return stride;}
+
         virtual void setResourceSize(uint32_t size);
         virtual void setResourceStride(uint32_t stride);
         virtual void setResourceSizeAndStride(uint32_t size, uint32_t stride);

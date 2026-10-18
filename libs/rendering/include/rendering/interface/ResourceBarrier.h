@@ -14,9 +14,12 @@ namespace jupiter::rendering
 
     struct ResourceBarrier
     {
+
+        ~ResourceBarrier() {delete transition;}
+
         ResourceBarrierType type = WM_RESOURCE_BARRIER_TYPE_TRANSITION;
         ResourceBarrierFlags flag = WM_RESOURCE_BARRIER_FLAGS_NONE;
-        ResourceTransitionBarrier* transition = new ResourceTransitionBarrier();;
+        ResourceTransitionBarrier* transition = new ResourceTransitionBarrier();
     };
 
 }

@@ -72,6 +72,9 @@ namespace jupiter::rendering
         Resource* allocateResource() override {return new DirectXResource();}
         void freeResource(Resource* resource) override {resource->destroyResource();}
 
+        MeshLoader* allocateMeshLoader() override {return new MeshLoader();}
+        void freeMeshLoader(MeshLoader* meshLoader) override {meshLoader->destroyMeshLoader();}
+
     };
 
 }

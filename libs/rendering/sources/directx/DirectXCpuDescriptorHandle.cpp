@@ -22,4 +22,9 @@ namespace jupiter::rendering
     {
         handle.ptr += (1 * rtvDescriptorSize);
     }
+
+    size_t DirectXCpuDescriptorHandle::getAddress()
+    {
+        return handle.ptr;
+    }
 }

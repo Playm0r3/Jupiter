@@ -14,6 +14,7 @@ namespace jupiter::rendering
     {
         uint32_t numberDescriptor;
         HeapDescriptorType type;
+        uint32_t flags; // 0 for default usage and 0x1 for shader visible
     };
 }
 

@@ -14,6 +14,8 @@
 #include<SDL3/SDL.h>
 #include <iostream>
 
+#include "jupiter/Renderer.h"
+
 using namespace jupiter;
 using namespace jupiter::engine;
 using namespace jupiter::math;
@@ -25,6 +27,8 @@ int main(int argc, char** argv)
     Window* window = new Window();
     window->createWindow(1080, 720, "Hello Jupiter");
 
+    Renderer* renderer = new Renderer();
+    renderer->createRenderer(DIRECTX_12, window);
 
     Astre* astre = new Astre();
 
@@ -47,11 +51,13 @@ int main(int argc, char** argv)
             if (event.type == SDL_EVENT_QUIT) isRunning = false;
         }
 
-        // update
-
+        renderer->render();
     }
 
     delete astre;
+
+    delete renderer;
+    delete window;
 
     std::cout << "Fin du Test" << std::endl;
     return 0;

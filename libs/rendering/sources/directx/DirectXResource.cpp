@@ -18,6 +18,11 @@ namespace jupiter::rendering
 
     }
 
+    uint64_t DirectXResource::getAddress()
+    {
+        return resource->GetGPUVirtualAddress();
+    }
+
     void DirectXResource::copyToUpload(void* data, size_t size)
     {
         void* mappedData = nullptr;

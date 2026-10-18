@@ -15,7 +15,7 @@ namespace jupiter::rendering
         const DirectXDevice* d = device->getDHandle();
         HRESULT hr = d->device->CreateFence(initValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
         fenceEvent = CreateEvent(nullptr, false, false, nullptr);
-        fenceValue = 1;
+        fenceValue = initValue;
 
         if (!FAILED(hr) && fenceEvent != nullptr) return;
 
@@ -40,7 +40,12 @@ namespace jupiter::rendering
 
     void DirectXFence::waitGpuIdle()
     {
+        if (fence->GetCompletedValue() >= fenceValue) return;
         fence->SetEventOnCompletion(fenceValue, fenceEvent);
-        WaitForSingleObject(fenceEvent, 20000);
+
+        if (WaitForSingleObject(fenceEvent, 20000) != WAIT_OBJECT_0)
+        {
+            throw std::exception("[Jupiter] Le GPU à mis plus de 20 secondes pour finir une tache !");
+        }
     }
 }

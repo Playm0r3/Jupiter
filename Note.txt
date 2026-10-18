@@ -1,1 +1,2 @@
 Dans la scene compter le nombre de doublons pour activer ou non l'instancing rendering
+Créer un CommandAllocator dédier pour le chargement de ressources (mesh, texture, ...)

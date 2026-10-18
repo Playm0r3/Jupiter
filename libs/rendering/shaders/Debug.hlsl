@@ -9,6 +9,11 @@ struct PSInput{
 	float3 normal : NORMAL;
 };
 
+cbuffer TransformBuffer : register(b0)
+{
+    float4x4 mvp;
+};
+
 PSInput VSMain(VSInput input)
 {
 	PSInput output;

@@ -24,7 +24,7 @@ namespace jupiter::rendering
         void createDescriptorHeap(Device* device, HeapDescriptor* descriptor) override;
         void destroyDescriptorHeap() override;
 
-        void* getCpuHandleWithOffset(long offset) override;
+        size_t getCpuHandleWithOffset(long offset) override;
 
         DirectXDescriptorHeap* getDHandle() override { return this; }
 

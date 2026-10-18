@@ -12,6 +12,7 @@
 
 namespace jupiter::rendering
 {
+    class DescriptorHeap;
     struct HeapProperties;
     struct ResourceDescriptor;
 
@@ -31,7 +32,7 @@ namespace jupiter::rendering
         void createCommitedResource(CommittedResourceDescriptor* descriptor) override;
 
         void createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh) override;
-        void createDepthStencilView(Resource* resource, CpuDescriptorHandle* cdh, DepthBufferDescriptor* descriptor) override;
+        void createDepthStencilView(Resource* resource, DescriptorHeap* descHeap, DepthBufferDescriptor* descriptor) override;
 
         DirectXDevice* getDHandle() override { return this; }
 

@@ -13,6 +13,7 @@
 
 namespace jupiter::rendering
 {
+    class Device;
 
     class CommandAllocator;
     class Resource;
@@ -44,11 +45,14 @@ namespace jupiter::rendering
         virtual void rootSignatureSetViewPort(uint32_t viewPortCount, Viewport* viewport) = 0;
         virtual void rootSignatureSetScissorRects(uint32_t scissorCount, Scissor* scissorRects) = 0;
 
-        virtual void oMSetRenderTarget(uint32_t count, void* renderTargetDescriptor, bool singleDescriptor, void* depthStencilDescriptor) = 0;
-        virtual void clearRenderTargetView(void* cpuHandle, float color[4], uint32_t rectNum, Rect* rect) = 0;
+        virtual void oMSetRenderTarget(uint32_t count, size_t renderTargetDescriptor, bool singleDescriptor, size_t depthStencilDescriptor) = 0;
+        virtual void clearRenderTargetView(size_t cpuHandle, float color[4], uint32_t rectNum, Rect* rect) = 0;
+        virtual void clearDepthStencilView(size_t cpuHandle, float depth, uint8_t stencil) = 0;
         virtual void setPrimitiveTopology(PrimitiveTopology topology) = 0;
         virtual void setVertexBuffer(uint32_t count, uint32_t c2, Resource* vertexBuffer) = 0;
+        virtual void setIndexBuffer(Resource* indexBuffer) = 0;
         virtual void drawInstanced(uint32_t vertexPerInstance, uint32_t instanceCount, uint32_t startVertexLocation, uint32_t startInstanceLocation) = 0;
+        virtual void drawIndexedInstanced(uint32_t indexCountPerInstance, uint32_t instanceCount, uint32_t startIndexLocation, uint32_t baseVertexLocation, uint32_t startInstanceLocation) = 0;
 
         virtual DirectXCommandList* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api !"};}
 

@@ -48,7 +48,9 @@ namespace jupiter::rendering
         desc.PS.BytecodeLength = pixelShader->byteCode.size();
         desc.BlendState = blendDescriptor;
         desc.RasterizerState = rasterizerDescriptor;
-        desc.DepthStencilState.DepthEnable = FALSE;
+        desc.DepthStencilState.DepthEnable = TRUE;
+        desc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+        desc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
         desc.DepthStencilState.StencilEnable = FALSE;
         desc.SampleMask = 0xffffffff;
         desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -56,6 +58,7 @@ namespace jupiter::rendering
         desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
         desc.SampleDesc.Count = 1;
         desc.SampleDesc.Quality = 0;
+        desc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
         HRESULT hr = d->device->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(&pipelineState));
         if (!FAILED(hr)) return;

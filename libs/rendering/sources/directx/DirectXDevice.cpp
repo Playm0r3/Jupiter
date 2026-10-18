@@ -15,6 +15,8 @@
 
 #include <iostream>
 
+#include "rendering/interface/DescriptorHeap.h"
+
 namespace jupiter::rendering
 {
 
@@ -52,18 +54,20 @@ namespace jupiter::rendering
         device->CreateRenderTargetView(r->resource.Get(), nullptr, handle->handle);
     }
 
-    void DirectXDevice::createDepthStencilView(Resource* resource, CpuDescriptorHandle* cdh,
+    void DirectXDevice::createDepthStencilView(Resource* resource, DescriptorHeap* descHeap,
         DepthBufferDescriptor* descriptor)
     {
         DirectXResource* r = resource->getDHandle();
-        DirectXCpuDescriptorHandle* handle = cdh->getDHandle();
 
         D3D12_DEPTH_STENCIL_VIEW_DESC desc{};
         desc.Format = utils::getFormat(descriptor->format);
         desc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
         desc.Flags = D3D12_DSV_FLAG_NONE;
+        desc.Texture2D.MipSlice = 0;
 
-        device->CreateDepthStencilView(r->resource.Get(), &desc, handle->handle);
+        D3D12_CPU_DESCRIPTOR_HANDLE handle{descHeap->getCpuHandleWithOffset(0)};
+        std::cout << "DSV view ptr : " << handle.ptr << std::endl;
+        device->CreateDepthStencilView(r->resource.Get(), &desc, handle);
     }
 
     void DirectXDevice::createCommandAllocator(CommandListType type, CommandAllocator* allocator)
@@ -84,6 +88,10 @@ namespace jupiter::rendering
 
         HRESULT hr = device->CreateCommittedResource(&hProps, D3D12_HEAP_FLAG_NONE, &rDesc,
             utils::getResourceStateFromResourceState(descriptor->resourceState), nullptr, IID_PPV_ARGS(&r->resource));;
+
+        std::cout << "depth hr = 0x" << std::hex << hr << std::dec << std::endl;
+        std::cout << "depth res = " << static_cast<void*>(r->resource.Get()) << std::endl;
+
         if (!FAILED(hr)) return;
 
         std::cout << "[Soleil] Impossible de creer une committed resource" << std::endl;

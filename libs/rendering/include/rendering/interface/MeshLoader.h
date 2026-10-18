@@ -6,6 +6,7 @@
 #define JUPITER_MESHLOADER_H
 
 #include <filesystem>
+#include <fbxsdk.h>
 
 namespace jupiter::rendering
 {

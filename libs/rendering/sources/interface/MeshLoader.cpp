@@ -37,6 +37,7 @@ namespace jupiter::rendering
 
         processNode(scene->GetRootNode(), result);
 
+        return result;
     }
 
     void MeshLoader::processNode(FbxNode* node, std::vector<MeshData>& out)

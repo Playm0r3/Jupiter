@@ -16,6 +16,7 @@
 #include "rendering/directx/DirectXDescriptorHeap.h"
 
 #include "rendering/interface/CommandListDescriptor.h"
+#include "rendering/interface/InputFormat.h"
 #include "rendering/interface/ResourceBarrier.h"
 #include "rendering/interface/ResourceBarrierType.h"
 #include "rendering/interface/PrimitiveTopology.h"
@@ -49,29 +50,19 @@ namespace jupiter::rendering
 
     void DirectXCommandList::close()
     {
-        HRESULT hr = commandList->Close();
-        if (!FAILED(hr)) return;
-
+        if (const HRESULT hr = commandList->Close(); !FAILED(hr)) return;
         std::cout << "[Soleil] Impossible de fermer la list de commande" << std::endl;
     }
 
     void DirectXCommandList::reset(CommandAllocator* allocator, PipelineState* pipeline)
     {
-        DirectXCommandAllocator* a = allocator->getDHandle();
-        DirectXPipelineState* p = nullptr;
-        HRESULT hr = S_OK;
+        ID3D12CommandAllocator* all = nullptr;
+        ID3D12PipelineState* pip = nullptr;
 
-        if (pipeline != nullptr)
-        {
-            p = pipeline->getDHandle();
-            hr = commandList->Reset(a->allocator.Get(), p->pipelineState.Get());
-        } else
-        {
-            hr = commandList->Reset(a->allocator.Get(), nullptr);
-        }
+        if (allocator != nullptr) all = allocator->getDHandle()->allocator.Get();
+        if (pipeline != nullptr) pip = pipeline->getDHandle()->pipelineState.Get();
 
-        if (!FAILED(hr)) return;
-
+        if (const HRESULT hr = commandList->Reset(all, pip); !FAILED(hr)) return;
         std::cout << "[Soleil] Impossible de reinitialiser la liste de commande" << std::endl;
     }
 
@@ -131,23 +122,19 @@ namespace jupiter::rendering
         commandList->RSSetScissorRects(scissorCount, &scissor);
     }
 
-    void DirectXCommandList::oMSetRenderTarget(uint32_t count, void* renderTargetDescriptor,
-        bool singleDescriptor, void* depthStencilDescriptor)
+    void DirectXCommandList::oMSetRenderTarget(uint32_t count, size_t renderTargetDescriptor,
+        bool singleDescriptor, size_t depthStencilDescriptor)
     {
-        D3D12_CPU_DESCRIPTOR_HANDLE* handle = nullptr;
-        D3D12_CPU_DESCRIPTOR_HANDLE* depthHandle = nullptr;
+        D3D12_CPU_DESCRIPTOR_HANDLE handle{renderTargetDescriptor};
+        D3D12_CPU_DESCRIPTOR_HANDLE depthHandle{depthStencilDescriptor};
 
-        if (renderTargetDescriptor != nullptr) handle = ((D3D12_CPU_DESCRIPTOR_HANDLE*)renderTargetDescriptor);
-        if (depthStencilDescriptor != nullptr) depthHandle = ((D3D12_CPU_DESCRIPTOR_HANDLE*)depthStencilDescriptor);
-
-        commandList->OMSetRenderTargets(count, handle, static_cast<int>(singleDescriptor), depthHandle);
+        commandList->OMSetRenderTargets(count, &handle, static_cast<int>(singleDescriptor), &depthHandle);
     }
 
-    void DirectXCommandList::clearRenderTargetView(void* cpuHandle, float color[4], uint32_t rectNum, Rect* rect)
+    void DirectXCommandList::clearRenderTargetView(size_t cpuHandle, float color[4], uint32_t rectNum, Rect* rect)
     {
-        D3D12_CPU_DESCRIPTOR_HANDLE* handle = static_cast<D3D12_CPU_DESCRIPTOR_HANDLE*>(cpuHandle);
+        D3D12_CPU_DESCRIPTOR_HANDLE handle{cpuHandle};
         D3D12_RECT* r = nullptr;
-
         if (rect != nullptr)
         {
             r = new D3D12_RECT;
@@ -158,8 +145,14 @@ namespace jupiter::rendering
             r->right = rect->right;
         }
 
-        commandList->ClearRenderTargetView(*handle, color, rectNum, r);
+        commandList->ClearRenderTargetView(handle, color, rectNum, r);
         delete r;
+    }
+
+    void DirectXCommandList::clearDepthStencilView(size_t cpuHandle, float depth, uint8_t stencil)
+    {
+        const D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle{cpuHandle};
+        commandList->ClearDepthStencilView(dsvHandle, static_cast<D3D12_CLEAR_FLAGS>(0x1), depth, stencil, 0, nullptr);
     }
 
     void DirectXCommandList::setPrimitiveTopology(PrimitiveTopology topology)
@@ -179,9 +172,27 @@ namespace jupiter::rendering
         commandList->IASetVertexBuffers(startSlot, numViews, &view);
     }
 
+    void DirectXCommandList::setIndexBuffer(Resource* indexBuffer)
+    {
+        if (indexBuffer == nullptr) throw std::exception("[Soleil] Invalide Resource");
+
+        D3D12_INDEX_BUFFER_VIEW view{};
+        view.BufferLocation = indexBuffer->getAddress();
+        view.SizeInBytes = indexBuffer->getSize();
+        view.Format = utils::getFormat(WM_INPUT_FORMAT_UINT_32_BIT);
+
+        commandList->IASetIndexBuffer(&view);
+    }
+
     void DirectXCommandList::drawInstanced(uint32_t vertexPerInstance, uint32_t instanceCount,
-        uint32_t startVertexLocation, uint32_t startInstanceLocation)
+                                           uint32_t startVertexLocation, uint32_t startInstanceLocation)
     {
         commandList->DrawInstanced(vertexPerInstance, instanceCount, startVertexLocation, startInstanceLocation);
+    }
+
+    void DirectXCommandList::drawIndexedInstanced(uint32_t indexCountPerInstance, uint32_t instanceCount,
+        uint32_t startIndexLocation, uint32_t baseVertexLocation, uint32_t startInstanceLocation)
+    {
+        commandList->DrawIndexedInstanced(indexCountPerInstance, instanceCount, startIndexLocation, baseVertexLocation, startInstanceLocation);
     }
 }

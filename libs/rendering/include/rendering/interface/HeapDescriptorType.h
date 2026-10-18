@@ -12,7 +12,8 @@ namespace jupiter::rendering
     enum HeapDescriptorType
     {
         WM_HEAP_DESCRIPTOR_TYPE_RTV,
-        WM_HEAP_DESCRIPTOR_TYPE_DSV
+        WM_HEAP_DESCRIPTOR_TYPE_DSV,
+        WM_HEAP_DESCRIPTOR_TYPE_CBV_SRV_UAV,
     };
 
     namespace utils

@@ -16,6 +16,8 @@ namespace jupiter::rendering::utils
             return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
         case HeapDescriptorType::WM_HEAP_DESCRIPTOR_TYPE_DSV:
             return D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+        case HeapDescriptorType::WM_HEAP_DESCRIPTOR_TYPE_CBV_SRV_UAV:
+            return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         default:
             std::cout << "[Soleil] HeapDescriptorType inconnu retour du type RTV" << std::endl;
             return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;

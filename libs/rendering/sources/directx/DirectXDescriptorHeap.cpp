@@ -31,13 +31,10 @@ namespace jupiter::rendering
 
     }
 
-    void* DirectXDescriptorHeap::getCpuHandleWithOffset(long offset)
+    size_t DirectXDescriptorHeap::getCpuHandleWithOffset(long offset)
     {
-        D3D12_CPU_DESCRIPTOR_HANDLE* descriptor = new D3D12_CPU_DESCRIPTOR_HANDLE{};
-        (*descriptor) = getCPUDescriptorHandleForHeapStart();
-        descriptor->ptr += offset;
-
-        return (void*)descriptor;
+        D3D12_CPU_DESCRIPTOR_HANDLE descriptor = getCPUDescriptorHandleForHeapStart();
+        return descriptor.ptr + offset;
     }
 
     D3D12_CPU_DESCRIPTOR_HANDLE DirectXDescriptorHeap::getCPUDescriptorHandleForHeapStart()

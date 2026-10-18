@@ -23,6 +23,8 @@ namespace jupiter::rendering
         virtual void createCpuDescriptorHandle(DescriptorHeap* descriptorHeap) = 0;
         virtual void destroyCpuDescriptorHandle() = 0;
 
+        virtual size_t getAddress() = 0;
+
         virtual void offset(uint32_t rtvDescriptorSize) = 0;
 
         virtual DirectXCpuDescriptorHandle* getDHandle() { throw std::exception{"[Soleil] Mauvais appel d'api ! "}; }

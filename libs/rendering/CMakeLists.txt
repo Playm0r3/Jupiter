@@ -42,7 +42,11 @@ add_library(soleil STATIC
 
 message("[Soleil] Build pour : ${TARGET_ARCHITECTURE}")
 
-target_include_directories(soleil PUBLIC include PRIVATE "C:/Program Files/Autodesk/FBX/FBX SDK/2020.3.11/include"
+set(FBX_SDK_DIR "C:/Program Files/Autodesk/FBX/FBX SDK/2020.3.11")
+
+target_include_directories(soleil PUBLIC
+        include
+        "${FBX_SDK_DIR}/include"
 )
 
 target_link_libraries(soleil
@@ -51,6 +55,7 @@ target_link_libraries(soleil
         dxgi.lib
         d3dcompiler.lib
         ${CMAKE_SOURCE_DIR}/externs/dxc/lib/${TARGET_ARCHITECTURE}/dxcompiler.lib
+    PUBLIC
         "C:/Program Files/Autodesk/FBX/FBX SDK/2020.3.11/lib/x64/release/libfbxsdk.lib"
 )
 

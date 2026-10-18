@@ -17,6 +17,7 @@ namespace jupiter::rendering
     class CpuDescriptorHandle;
     class DirectXDevice;
     class CommandAllocator;
+    class DescriptorHeap;
 
     struct CommittedResourceDescriptor;
     struct DepthBufferDescriptor;
@@ -36,7 +37,7 @@ namespace jupiter::rendering
         virtual void createCommitedResource(CommittedResourceDescriptor* descriptor) = 0;
 
         virtual void createRenderTargetView(Resource* resource, CpuDescriptorHandle* cdh) = 0;
-        virtual void createDepthStencilView(Resource* resource, CpuDescriptorHandle* cdh, DepthBufferDescriptor* descriptor) = 0;
+        virtual void createDepthStencilView(Resource* resource, DescriptorHeap* descHeap, DepthBufferDescriptor* descriptor) = 0;
 
         virtual DirectXDevice* getDHandle() {throw std::exception{"[Soleil] Mauvais appel d'api"};};
 

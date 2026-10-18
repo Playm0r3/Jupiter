@@ -17,6 +17,7 @@ namespace jupiter::rendering
         WM_INPUT_FORMAT_FLOAT_3,
         WM_INPUT_FORMAT_FLOAT_4,
         WM_INPUT_FORMAT_FLOAT_32_BIT,
+        WM_INPUT_FORMAT_UINT_32_BIT,
     };
 
     namespace utils

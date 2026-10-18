@@ -15,6 +15,7 @@
 #include "interface/RootSignature.h"
 #include "interface/Swapchain.h"
 #include "interface/PipelineState.h"
+#include "interface/MeshLoader.h"
 
 namespace jupiter::rendering
 {
@@ -64,6 +65,9 @@ namespace jupiter::rendering
 
         virtual Resource* allocateResource() = 0;
         virtual void freeResource(Resource* resource) = 0;
+
+        virtual MeshLoader* allocateMeshLoader() = 0;
+        virtual void freeMeshLoader(MeshLoader* meshLoader) = 0;
 
         static InterfaceAllocator* selectApi(Api api);
     };

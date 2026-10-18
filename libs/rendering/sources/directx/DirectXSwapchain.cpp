@@ -26,7 +26,7 @@ namespace jupiter::rendering
         desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
         desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-        desc.OutputWindow = (*descriptor->windowHandles);
+        desc.OutputWindow = static_cast<HWND>(descriptor->windowHandles);
         desc.SampleDesc.Count = 1;
         desc.Windowed = TRUE;
 
@@ -55,9 +55,7 @@ namespace jupiter::rendering
 
     void DirectXSwapchain::present(uint32_t interval, uint32_t flags)
     {
-        HRESULT hr = swapchain->Present(interval, flags);
-        if (!FAILED(hr)) return;
-
+        if (const HRESULT hr = swapchain->Present(interval, flags); !FAILED(hr)) return;
         std::cout << "[Soleil] Impossible de presenter la nouvelle image !" << std::endl;
     }
 }
